@@ -1,0 +1,13 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+
+  <?php if ($this->prev): ?>
+    <a class="sibling-prev" href="<?= $this->prev ?>" title="<?= $this->prevTitle ?>"><?= $GLOBALS['TL_LANG']['MSC']['previous'] ?></a>
+  <?php endif; ?>
+
+  <?php if ($this->next): ?>
+    <a class="sibling-next" href="<?= $this->next ?>" title="<?= $this->nextTitle ?>"><?= $GLOBALS['TL_LANG']['MSC']['next'] ?></a>
+  <?php endif; ?>
+
+<?php $this->endblock(); ?>
