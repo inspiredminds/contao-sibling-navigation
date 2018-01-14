@@ -95,7 +95,6 @@ class SiblingNavigationEvents extends Events
         $arrPrev  = null;
         $arrNext  = null;
         $blnFound = false;
-        $blnSet   = false;
 
         foreach ($arrAllEvents as $day)
         {
