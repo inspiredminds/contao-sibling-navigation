@@ -21,7 +21,7 @@ to your `AppKernel.php`.
 
 ## Usage
 
-Simply create a _News sibling navigation_ or _Event sibling navigation_ module and integrate in your page layout or as an include element.
+Simply create a _News sibling navigation_ or _Event sibling navigation_ module and integrate it in your page layout or as an include element.
 
 ## News Categories features
 
