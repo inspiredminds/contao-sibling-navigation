@@ -11,9 +11,9 @@
  * @copyright inspiredminds 2018
  */
 
-namespace ContaoSiblingNavigation\ContaoManager;
+namespace InspiredMinds\ContaoSiblingNavigation\ContaoManager;
 
-use ContaoSiblingNavigation\ContaoSiblingNavigationBundle;
+use InspiredMinds\ContaoSiblingNavigation\ContaoSiblingNavigationBundle;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;

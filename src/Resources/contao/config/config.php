@@ -11,8 +11,8 @@
  * @copyright inspiredminds 2018
  */
 
-use ContaoSiblingNavigation\Module\SiblingNavigationEvents;
-use ContaoSiblingNavigation\Module\SiblingNavigationNews;
+use InspiredMinds\ContaoSiblingNavigation\Module\SiblingNavigationEvents;
+use InspiredMinds\ContaoSiblingNavigation\Module\SiblingNavigationNews;
 use Contao\CalendarBundle\ContaoCalendarBundle;
 use Contao\NewsBundle\ContaoNewsBundle;
 use Contao\System;

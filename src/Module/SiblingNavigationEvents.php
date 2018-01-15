@@ -11,7 +11,7 @@
  * @copyright inspiredminds 2018
  */
 
-namespace ContaoSiblingNavigation\Module;
+namespace InspiredMinds\ContaoSiblingNavigation\Module;
 
 use Contao\BackendTemplate;
 use Contao\CalendarEventsModel;

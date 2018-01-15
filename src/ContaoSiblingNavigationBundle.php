@@ -11,7 +11,7 @@
  * @copyright inspiredminds 2018
  */
 
-namespace ContaoSiblingNavigation;
+namespace InspiredMinds\ContaoSiblingNavigation;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

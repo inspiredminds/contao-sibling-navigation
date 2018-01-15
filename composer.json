@@ -36,10 +36,10 @@
     },
 	"autoload": {
 		"psr-4": {
-			"ContaoSiblingNavigation\\": "src/"
+			"InspiredMinds\\ContaoSiblingNavigation\\": "src/"
 		}
 	},
 	"extra": {
-		"contao-manager-plugin": "ContaoSiblingNavigation\\ContaoManager\\Plugin"
+		"contao-manager-plugin": "InspiredMinds\\ContaoSiblingNavigation\\ContaoManager\\Plugin"
 	}
 }
