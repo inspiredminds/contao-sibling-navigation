@@ -30,3 +30,7 @@ The sibling navigation can be further limited by providing one or more news cate
 http://example.org/news/detail/foo.html?category=1,3
 ```
 This will limit the previous and next links to news items that have categories with the ID `1` __and__ `3` assigned.
+
+## Acknowledgements
+
+Development funded by [Jan Kout](https://www.jankout.eu).
