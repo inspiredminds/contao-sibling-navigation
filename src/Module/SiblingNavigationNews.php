@@ -144,9 +144,6 @@ class SiblingNavigationNews extends ModuleNews
         $arrQueryPrev = $arrQuery;
         $arrQueryNext = $arrQuery;
 
-        \Symfony\Component\VarDumper\VarDumper::dump($arrQueryPrev);
-        \Symfony\Component\VarDumper\VarDumper::dump($arrQueryNext);
-
         // support for news_sorted, news_sorting and news_order
         $this->news_order = $this->news_order ?: $this->news_sorting;
         switch ($this->news_order)
@@ -192,9 +189,6 @@ class SiblingNavigationNews extends ModuleNews
                 $arrQueryNext['value'][] = $objCurrent->date;
                 $arrQueryNext['order'] = "$t.date ASC";
         }
-
-        \Symfony\Component\VarDumper\VarDumper::dump($arrQueryPrev);
-        \Symfony\Component\VarDumper\VarDumper::dump($arrQueryNext);
 
         $objPrev = NewsModel::findAll($arrQueryPrev);
         $objNext = NewsModel::findAll($arrQueryNext);
