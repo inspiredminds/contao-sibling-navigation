@@ -51,7 +51,7 @@ if (in_array(ContaoNewsBundle::class, $bundles))
         PaletteManipulator::create()
             ->addField('news_order', 'config_legend', PaletteManipulator::POSITION_APPEND)
             ->applyToPalette('sibling_navigation_news', 'tl_module');
-    }   
+    }
 }
 
 
