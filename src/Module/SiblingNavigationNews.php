@@ -137,7 +137,6 @@ class SiblingNavigationNews extends ModuleNews
             }
         }
 
-        // find prev
         $objPrev = NewsModel::findAll([
             'column' => array_merge($column, ["tl_news.date < ?"]), 
             'value'  => [$objCurrent->date], 
