@@ -15,7 +15,7 @@ composer require inspiredminds/contao-sibling-navigation
 ```
 If you use the Contao Standard Edition, you will have to add
 ```php
-new ContaoSiblingNavigation\ContaoSiblingNavigationBundle()
+new InspiredMinds\ContaoSiblingNavigation\ContaoSiblingNavigationBundle()
 ```
 to your `AppKernel.php`.
 
