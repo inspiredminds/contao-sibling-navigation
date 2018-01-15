@@ -94,10 +94,14 @@ class SiblingNavigationNews extends ModuleNews
 
         $t = NewsModel::getTable();
 
-        // Basic column query definition
-        $column = [
-            "$t.pid IN(" . \implode(',', \array_map('intval', $this->news_archives)) . ")",
-            "$t.published = '1'",
+        // Basic query definition
+        $arrQuery = [
+            'column' => [
+                "$t.pid IN(" . \implode(',', \array_map('intval', $this->news_archives)) . ")",
+                "$t.published = '1'",
+            ],
+            'limit'  => 1,
+            'return' => 'Model',
         ];
 
         // Get category parameter
@@ -133,25 +137,67 @@ class SiblingNavigationNews extends ModuleNews
 
             if ($arrCategoryNewsIds)
             {
-                $column[] = "$t.id IN(" . \implode(',', $arrCategoryNewsIds) . ")";
+                $arrQuery['column'][] = "$t.id IN(" . \implode(',', $arrCategoryNewsIds) . ")";
             }
         }
 
-        $objPrev = NewsModel::findAll([
-            'column' => array_merge($column, ["tl_news.date < ?"]), 
-            'value'  => [$objCurrent->date], 
-            'limit'  => 1,
-            'order'  => 'tl_news.date DESC',
-            'return' => 'Model',
-        ]);
+        $arrQueryPrev = $arrQuery;
+        $arrQueryNext = $arrQuery;
 
-        $objNext = NewsModel::findAll([
-            'column' => array_merge($column, ["tl_news.date > ?"]),
-            'value'  => [$objCurrent->date], 
-            'limit'  => 1,
-            'order'  => 'tl_news.date ASC',
-            'return' => 'Model',
-        ]);
+        \Symfony\Component\VarDumper\VarDumper::dump($arrQueryPrev);
+        \Symfony\Component\VarDumper\VarDumper::dump($arrQueryNext);
+
+        // support for news_sorted, news_sorting and news_order
+        $this->news_order = $this->news_order ?: $this->news_sorting;
+        switch ($this->news_order)
+        {
+            case 'list_date_asc':
+            case 'sort_date_asc':
+            case 'order_date_asc':
+                $arrQueryPrev['column'][] = "$t.date > ?"; 
+                $arrQueryPrev['value'][] = $objCurrent->date;
+                $arrQueryPrev['order'] = "$t.date ASC";
+                $arrQueryNext['column'][] = "$t.date < ?";
+                $arrQueryNext['value'][] = $objCurrent->date;
+                $arrQueryNext['order'] = "$t.date DESC";
+                break;
+
+            case 'list_headline_asc':
+            case 'sort_headline_asc':
+            case 'order_headline_asc':
+                $arrQueryPrev['column'][] = "$t.headline > ?"; 
+                $arrQueryPrev['value'][] = $objCurrent->headline;
+                $arrQueryPrev['order'] = "$t.headline ASC";
+                $arrQueryNext['column'][] = "$t.headline < ?";
+                $arrQueryNext['value'][] = $objCurrent->headline;
+                $arrQueryNext['order'] = "$t.headline DESC";
+                break;
+
+            case 'list_headline_desc':
+            case 'sort_headline_desc':
+            case 'order_headline_desc':
+                $arrQueryPrev['column'][] = "$t.headline < ?"; 
+                $arrQueryPrev['value'][] = $objCurrent->headline;
+                $arrQueryPrev['order'] = "$t.headline DESC";
+                $arrQueryNext['column'][] = "$t.headline > ?";
+                $arrQueryNext['value'][] = $objCurrent->headline;
+                $arrQueryNext['order'] = "$t.headline ASC";
+                break;
+
+            default:
+                $arrQueryPrev['column'][] = "$t.date < ?"; 
+                $arrQueryPrev['value'][] = $objCurrent->date;
+                $arrQueryPrev['order'] = "$t.date DESC";
+                $arrQueryNext['column'][] = "$t.date > ?";
+                $arrQueryNext['value'][] = $objCurrent->date;
+                $arrQueryNext['order'] = "$t.date ASC";
+        }
+
+        \Symfony\Component\VarDumper\VarDumper::dump($arrQueryPrev);
+        \Symfony\Component\VarDumper\VarDumper::dump($arrQueryNext);
+
+        $objPrev = NewsModel::findAll($arrQueryPrev);
+        $objNext = NewsModel::findAll($arrQueryNext);
 
         $strPrevLink = $objPrev ? News::generateNewsUrl($objPrev) . ($strCategory ? '?category='.$strCategory : '') : null;
         $strNextLink = $objNext ? News::generateNewsUrl($objNext) . ($strCategory ? '?category='.$strCategory : '') : null;
