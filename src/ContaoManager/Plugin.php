@@ -34,7 +34,7 @@ class Plugin implements BundlePluginInterface
     {
         return [
             BundleConfig::create(ContaoSiblingNavigationBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class])
+                ->setLoadAfter([ContaoCoreBundle::class,'news_sorting'])
         ];
     }
 }

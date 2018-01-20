@@ -144,11 +144,10 @@ class SiblingNavigationNews extends ModuleNews
         $arrQueryPrev = $arrQuery;
         $arrQueryNext = $arrQuery;
 
-        // support for news_sorted, news_sorting and news_order
-        $this->news_order = $this->news_order ?: $this->news_sorting;
+        // support for news_sorting and news_order
+        $this->news_order = $this->news_sorting ?: $this->news_order;
         switch ($this->news_order)
         {
-            case 'list_date_asc':
             case 'sort_date_asc':
             case 'order_date_asc':
                 $arrQueryPrev['column'][] = "$t.date > ?"; 
@@ -159,7 +158,6 @@ class SiblingNavigationNews extends ModuleNews
                 $arrQueryNext['order'] = "$t.date DESC";
                 break;
 
-            case 'list_headline_asc':
             case 'sort_headline_asc':
             case 'order_headline_asc':
                 $arrQueryPrev['column'][] = "$t.headline > ?"; 
@@ -170,7 +168,6 @@ class SiblingNavigationNews extends ModuleNews
                 $arrQueryNext['order'] = "$t.headline DESC";
                 break;
 
-            case 'list_headline_desc':
             case 'sort_headline_desc':
             case 'order_headline_desc':
                 $arrQueryPrev['column'][] = "$t.headline < ?"; 

@@ -26,7 +26,7 @@ $packages = $container->getParameter('kernel.packages');
 /**
  * News sibling navigation
  */
-if (in_array(ContaoNewsBundle::class, $bundles))
+if (\in_array(ContaoNewsBundle::class, $bundles))
 {
     $GLOBALS['TL_DCA']['tl_module']['palettes']['sibling_navigation_news']  = '
         {title_legend},name,headline,type;
@@ -36,7 +36,7 @@ if (in_array(ContaoNewsBundle::class, $bundles))
         {invisible_legend:hide},invisible,start,stop';
  
     $version = $packages['contao/news-bundle'];
-    if (version_compare($version, '4.5', '>='))
+    if (\version_compare($version, '4.5', '>='))
     {
         $GLOBALS['TL_DCA']['tl_module']['fields']['news_order']['options_callback'] = function(DataContainer $dc)
         {
@@ -50,6 +50,22 @@ if (in_array(ContaoNewsBundle::class, $bundles))
 
         PaletteManipulator::create()
             ->addField('news_order', 'config_legend', PaletteManipulator::POSITION_APPEND)
+            ->applyToPalette('sibling_navigation_news', 'tl_module');
+    }
+    elseif (\in_array('news_sorting', \array_keys($bundles)))
+    {
+        $GLOBALS['TL_DCA']['tl_module']['fields']['news_sorting']['options_callback'] = function(DataContainer $dc)
+        {
+            if ($dc->activeRecord && $dc->activeRecord->type == 'sibling_navigation_news')
+            {
+                return array('sort_date_desc', 'sort_date_asc', 'sort_headline_asc', 'sort_headline_desc');
+            }
+
+            return $GLOBALS['TL_DCA']['tl_module']['fields']['news_sorting']['options'];
+        };
+
+        PaletteManipulator::create()
+            ->addField('news_sorting', 'config_legend', PaletteManipulator::POSITION_APPEND)
             ->applyToPalette('sibling_navigation_news', 'tl_module');
     }
 }
