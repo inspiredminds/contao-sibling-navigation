@@ -29,11 +29,11 @@
 	"conflict": {
 		"contao/news-bundle": "<4.4|^5.0",
 		"contao/calendar-bundle": "<4.4|^5.0",
-		"codefog/contao-news_categories": "<3.0|^4.0"
+		"codefog/contao-news_categories": "^4.0"
 	},
-    "suggest": {
-        "codefog/contao-news_categories": "Allows sibling pagination limited by categories"
-    },
+	"suggest": {
+		"codefog/contao-news_categories": "Allows sibling pagination limited by categories"
+	},
 	"autoload": {
 		"psr-4": {
 			"InspiredMinds\\ContaoSiblingNavigation\\": "src/"
