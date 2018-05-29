@@ -133,13 +133,11 @@ class SiblingNavigationEvents extends Events
         $objPrev = $arrPrev ? CalendarEventsModel::findById($arrPrev['id']) : null;
         $objNext = $arrNext ? CalendarEventsModel::findById($arrNext['id']) : null;
 
-        $this->Template->setData([
-            'prev'      => $objPrev ? Events::generateEventUrl($objPrev) : null,
-            'next'      => $objNext ? Events::generateEventUrl($objNext) : null,
-            'prevTitle' => $objPrev ? $objPrev->title : '',
-            'nextTitle' => $objNext ? $objNext->title : '',
-            'objPrev'   => $objPrev,
-            'objNext'   => $objNext,
-        ]);
+        $this->Template->prev = $objPrev ? Events::generateEventUrl($objPrev) : null;
+        $this->Template->next = $objNext ? Events::generateEventUrl($objNext) : null;
+        $this->Template->prevTitle = $objPrev ? $objPrev->title : '';
+        $this->Template->nextTitle = $objNext ? $objNext->title : '';
+        $this->Template->objPrev = $objPrev;
+        $this->Template->objNext = $objNext;
     }
 }
