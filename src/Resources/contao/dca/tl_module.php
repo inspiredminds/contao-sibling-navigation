@@ -31,6 +31,7 @@ if (\in_array(ContaoNewsBundle::class, $bundles))
     $GLOBALS['TL_DCA']['tl_module']['palettes']['sibling_navigation_news']  = '
         {title_legend},name,headline,type;
         {config_legend},news_archives;
+        {template_legend:hide},customTpl;
         {protected_legend:hide},protected;
         {expert_legend:hide},guests,cssID,space;
         {invisible_legend:hide},invisible,start,stop';
@@ -79,6 +80,7 @@ if (in_array(ContaoCalendarBundle::class, $bundles))
     $GLOBALS['TL_DCA']['tl_module']['palettes']['sibling_navigation_events']  = '
         {title_legend},name,headline,type;
         {config_legend},cal_calendar;
+        {template_legend:hide},customTpl;
         {protected_legend:hide},protected;
         {expert_legend:hide},guests,cssID,space;
         {invisible_legend:hide},invisible,start,stop';
