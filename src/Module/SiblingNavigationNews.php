@@ -193,13 +193,11 @@ class SiblingNavigationNews extends ModuleNews
         $strPrevLink = $objPrev ? News::generateNewsUrl($objPrev) . ($strCategory ? '?category='.$strCategory : '') : null;
         $strNextLink = $objNext ? News::generateNewsUrl($objNext) . ($strCategory ? '?category='.$strCategory : '') : null;
 
-        $this->Template->setData([
-            'prev'      => $strPrevLink,
-            'next'      => $strNextLink,
-            'prevTitle' => $objPrev ? $objPrev->headline : '',
-            'nextTitle' => $objNext ? $objNext->headline : '',
-            'objPrev'   => $objPrev,
-            'objNext'   => $objNext,
-        ]);
+        $this->Template->prev = $strPrevLink;
+        $this->Template->next = $strNextLink;
+        $this->Template->prevTitle = $objPrev ? $objPrev->headline : '';
+        $this->Template->nextTitle = $objNext ? $objNext->headline : '';
+        $this->Template->objPrev = $objPrev;
+        $this->Template->objNext = $objNext;
     }
 }
