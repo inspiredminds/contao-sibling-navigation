@@ -1,45 +1,46 @@
 {
-	"name": "inspiredminds/contao-sibling-navigation",
-	"description": "Provides a previous/next navigation for news & events.",
-	"keywords": ["contao", "sibling", "navigation", "news", "events"],
-	"type": "contao-bundle",
-	"homepage": "http://www.inspiredminds.at",
-	"license": "LGPL-3.0-or-later",
-	"authors": [
-		{
-			"name": "Fritz Michael Gschwantner",
-			"homepage": "http://www.inspiredminds.at",
-			"email": "fmg@inspiredminds.at",
-			"role": "Developer"
-		}
-	],
-	"support": {
-		"email": "fmg@inspiredminds.at",
-		"issues": "https://github.com/inspiredminds/contao-sibling-navigation/issues",
-		"source": "https://github.com/inspiredminds/contao-sibling-navigation",
-		"forum": "https://community.contao.org/de"
-	},
-	"require": {
-		"php": ">=5.4",
-		"contao/core-bundle": "^4.4"
-	},
-	"require-dev": {
-		 "contao/manager-plugin": "^2.0"
-	},
-	"conflict": {
-		"contao/news-bundle": "<4.4|^5.0",
-		"contao/calendar-bundle": "<4.4|^5.0",
-		"codefog/contao-news_categories": "^4.0"
-	},
-	"suggest": {
-		"codefog/contao-news_categories": "Allows sibling pagination limited by categories"
-	},
-	"autoload": {
-		"psr-4": {
-			"InspiredMinds\\ContaoSiblingNavigation\\": "src/"
-		}
-	},
-	"extra": {
-		"contao-manager-plugin": "InspiredMinds\\ContaoSiblingNavigation\\ContaoManager\\Plugin"
-	}
+    "name": "inspiredminds/contao-sibling-navigation",
+    "description": "Provides a previous/next navigation for news & events.",
+    "keywords": ["contao", "sibling", "navigation", "news", "events"],
+    "type": "contao-bundle",
+    "homepage": "http://www.inspiredminds.at",
+    "license": "LGPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Fritz Michael Gschwantner",
+            "homepage": "http://www.inspiredminds.at",
+            "email": "fmg@inspiredminds.at",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "email": "fmg@inspiredminds.at",
+        "issues": "https://github.com/inspiredminds/contao-sibling-navigation/issues",
+        "source": "https://github.com/inspiredminds/contao-sibling-navigation",
+        "forum": "https://community.contao.org/de"
+    },
+    "require": {
+        "php": ">=5.4",
+        "contao/core-bundle": "^4.4",
+        "patchwork/utf8": "^1.0"
+    },
+    "require-dev": {
+         "contao/manager-plugin": "^2.0"
+    },
+    "conflict": {
+        "contao/news-bundle": "<4.4 || ^5.0",
+        "contao/calendar-bundle": "<4.4 || ^5.0",
+        "codefog/contao-news_categories": "^4.0"
+    },
+    "suggest": {
+        "codefog/contao-news_categories": "Allows sibling pagination limited by categories"
+    },
+    "autoload": {
+        "psr-4": {
+            "InspiredMinds\\ContaoSiblingNavigation\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "InspiredMinds\\ContaoSiblingNavigation\\ContaoManager\\Plugin"
+    }
 }
