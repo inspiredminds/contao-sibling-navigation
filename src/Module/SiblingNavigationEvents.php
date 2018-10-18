@@ -19,6 +19,8 @@ use Contao\Config;
 use Contao\Events;
 use Contao\Input;
 use Contao\StringUtil;
+use Patchwork\Utf8;
+
 
 class SiblingNavigationEvents extends Events
 {
