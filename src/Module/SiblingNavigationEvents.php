@@ -80,65 +80,57 @@ class SiblingNavigationEvents extends Events
     protected function compile()
     {
         // Get the current news item
-        $objCurrent = CalendarEventsModel::findByIdOrAlias(Input::get('items'));
+        $currentEvent = CalendarEventsModel::findByIdOrAlias(Input::get('items'));
 
         // Check if calendar of current event is within the enabled calendars
-        if (!in_array($objCurrent->pid, $this->cal_calendar))
+        if (!in_array($currentEvent->pid, $this->cal_calendar))
         {
-            $this->cal_calendar = [$objCurrent->pid];
+            $this->cal_calendar = [$currentEvent->pid];
         }
 
         // Get all events
-        $arrAllEvents = $this->getAllEvents($this->cal_calendar, 0, PHP_INT_MAX);
-        ksort($arrAllEvents);
+        $days = $this->getAllEvents($this->cal_calendar, 0, PHP_INT_MAX);
+        ksort($days);
 
         // Search for previous and next event
-        $arrPrev  = null;
-        $arrNext  = null;
-        $blnFound = false;
+        $prev  = null;
+        $next  = null;
+        $flatEvents = [];
 
-        foreach ($arrAllEvents as $day)
+        foreach ($days as $day)
         {
             ksort($day);
-            foreach ($day as $arrEvents)
+            foreach ($day as $events)
             {
-                foreach ($arrEvents as $event)
+                foreach ($events as $event)
                 {
-                    if ($blnFound)
-                    {
-                        $arrNext = $event;
-                        break;
-                    }
-
-                    if ($event['id'] == $objCurrent->id)
-                    {
-                        $blnFound = true;
-                        continue;
-                    }
-
-                    $arrPrev = $event;
-                }
-
-                if ($arrNext)
-                {
-                    break;
+                    $flatEvents[$event['id']] = $event;
                 }
             }
+        }
 
-            if ($arrNext)
-            {
+        $flatEvents = array_values($flatEvents);
+
+        for ($i = 0; $i < count($flatEvents); ++$i) {
+            if ($flatEvents[$i]['id'] == $currentEvent->id) {
+                if ($i > 0) {
+                    $prev = $flatEvents[$i - 1];
+                }
+                if ($i < count($flatEvents) -1) {
+                    $next = $flatEvents[$i + 1];
+                }
                 break;
             }
         }
 
-        $objPrev = $arrPrev ? CalendarEventsModel::findById($arrPrev['id']) : null;
-        $objNext = $arrNext ? CalendarEventsModel::findById($arrNext['id']) : null;
+        $prev = $prev ? CalendarEventsModel::findById($prev['id']) : null;
+        $next = $next ? CalendarEventsModel::findById($next['id']) : null;
 
-        $this->Template->prev = $objPrev ? Events::generateEventUrl($objPrev) : null;
-        $this->Template->next = $objNext ? Events::generateEventUrl($objNext) : null;
-        $this->Template->prevTitle = $objPrev ? $objPrev->title : '';
-        $this->Template->nextTitle = $objNext ? $objNext->title : '';
-        $this->Template->objPrev = $objPrev;
-        $this->Template->objNext = $objNext;
+        $this->Template->prev = $prev ? Events::generateEventUrl($prev) : null;
+        $this->Template->next = $next ? Events::generateEventUrl($next) : null;
+        $this->Template->prevTitle = $prev ? $prev->title : '';
+        $this->Template->nextTitle = $next ? $next->title : '';
+        $this->Template->objPrev = $prev;
+        $this->Template->objNext = $next;
     }
 }
