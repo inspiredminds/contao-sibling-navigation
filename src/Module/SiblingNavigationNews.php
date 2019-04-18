@@ -59,10 +59,10 @@ class SiblingNavigationNews extends ModuleNews
         // Set the item from the auto_item parameter
         if (!isset($_GET['items']) && Config::get('useAutoItem') && isset($_GET['auto_item']))
         {
-            Input::setGet('items', Input::get('auto_item'));
+            Input::setGet('items', Input::get('auto_item', false, true));
         }
 
-        if (!Input::get('items'))
+        if (!Input::get('items', false, true))
         {
             return '';
         }
@@ -84,7 +84,7 @@ class SiblingNavigationNews extends ModuleNews
     protected function compile()
     {
         // Get the current news item
-        $objCurrent = NewsModel::findByIdOrAlias(Input::get('items'));
+        $objCurrent = NewsModel::findByIdOrAlias(Input::get('items', false, true));
 
         // Check if archive of current news item is within the enabled archives
         if (!in_array($objCurrent->pid, $this->news_archives))

@@ -55,10 +55,10 @@ class SiblingNavigationEvents extends Events
         // Set the item from the auto_item parameter
         if (!isset($_GET['items']) && Config::get('useAutoItem') && isset($_GET['auto_item']))
         {
-            Input::setGet('items', Input::get('auto_item'));
+            Input::setGet('items', Input::get('auto_item', false, true));
         }
 
-        if (!Input::get('items'))
+        if (!Input::get('items', false, true))
         {
             return '';
         }
@@ -80,7 +80,7 @@ class SiblingNavigationEvents extends Events
     protected function compile()
     {
         // Get the current news item
-        $currentEvent = CalendarEventsModel::findByIdOrAlias(Input::get('items'));
+        $currentEvent = CalendarEventsModel::findByIdOrAlias(Input::get('items', false, true));
 
         // Check if calendar of current event is within the enabled calendars
         if (!in_array($currentEvent->pid, $this->cal_calendar))
