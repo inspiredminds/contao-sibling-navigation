@@ -21,7 +21,7 @@ to your `AppKernel.php`.
 
 ## Usage
 
-Simply create a _News sibling navigation_ or _Event sibling navigation_ module and integrate it in your page layout or as an include element.
+Simply create a _News sibling navigation_ or _Event sibling navigation_ module and integrate it in your page layout or as an include element. If you do not select any news archives or calendars, the sibling navigation will automatically use the news or event entries' archive/calendar.
 
 ## News Categories features
 
