@@ -88,8 +88,8 @@ class SiblingNavigationEvents extends Events
             $this->cal_calendar = [$currentEvent->pid];
         }
 
-        // Get all events
-        $days = $this->getAllEvents($this->cal_calendar, 0, PHP_INT_MAX);
+        // Get all events, 1970-01-01 00:00:00 - 2038-01-01 00:00:00
+        $days = $this->getAllEvents($this->cal_calendar, 0, 2145913200);
         ksort($days);
 
         // Search for previous and next event
