@@ -30,6 +30,13 @@ class SiblingNavigationEvents extends Events
      */
     protected $strTemplate = 'mod_sibling_navigation';
 
+    /**
+     * Current event.
+     * 
+     * @var CalendarEventsModel
+     */
+    protected $currentEvent = null;
+
 
     /**
      * Display a wildcard in the back end.
@@ -53,12 +60,17 @@ class SiblingNavigationEvents extends Events
         }
 
         // Set the item from the auto_item parameter
+        $item = null;
         if (!isset($_GET['items']) && Config::get('useAutoItem') && isset($_GET['auto_item']))
         {
-            Input::setGet('items', Input::get('auto_item', false, true));
+            $item = Input::get('auto_item', false, true);
+        }
+        else
+        {
+            $item = Input::get('items', false, true);
         }
 
-        if (!Input::get('items', false, true))
+        if (null === $item)
         {
             return '';
         }
@@ -66,6 +78,13 @@ class SiblingNavigationEvents extends Events
         $this->cal_calendar = $this->sortOutProtected(StringUtil::deserialize($this->cal_calendar));
 
         if (!\is_array($this->cal_calendar) || empty($this->cal_calendar))
+        {
+            return '';
+        }
+
+        $this->currentEvent = CalendarEventsModel::findByIdOrAlias($item);
+
+        if (null === $this->currentEvent)
         {
             return '';
         }
@@ -79,13 +98,10 @@ class SiblingNavigationEvents extends Events
      */
     protected function compile()
     {
-        // Get the current news item
-        $currentEvent = CalendarEventsModel::findByIdOrAlias(Input::get('items', false, true));
-
         // Check if calendar of current event is within the enabled calendars
-        if (!in_array($currentEvent->pid, $this->cal_calendar))
+        if (!in_array($this->currentEvent->pid, $this->cal_calendar))
         {
-            $this->cal_calendar = [$currentEvent->pid];
+            $this->cal_calendar = [$this->currentEvent->pid];
         }
 
         // Get all events, 1970-01-01 00:00:00 - 2038-01-01 00:00:00
@@ -112,7 +128,7 @@ class SiblingNavigationEvents extends Events
         $flatEvents = array_values($flatEvents);
 
         for ($i = 0; $i < count($flatEvents); ++$i) {
-            if ($flatEvents[$i]['id'] == $currentEvent->id) {
+            if ($flatEvents[$i]['id'] == $this->currentEvent->id) {
                 if ($i > 0) {
                     $prev = $flatEvents[$i - 1];
                 }

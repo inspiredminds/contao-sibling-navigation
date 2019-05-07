@@ -34,6 +34,13 @@ class SiblingNavigationNews extends ModuleNews
      */
     protected $strTemplate = 'mod_sibling_navigation';
 
+    /**
+     * Current news item.
+     * 
+     * @var NewsModel
+     */
+    protected $currentNews = null;
+
 
     /**
      * Display a wildcard in the back end.
@@ -57,12 +64,17 @@ class SiblingNavigationNews extends ModuleNews
         }
 
         // Set the item from the auto_item parameter
+        $item = null;
         if (!isset($_GET['items']) && Config::get('useAutoItem') && isset($_GET['auto_item']))
         {
-            Input::setGet('items', Input::get('auto_item', false, true));
+            $item = Input::get('auto_item', false, true);
+        }
+        else
+        {
+            $item = Input::get('items', false, true);
         }
 
-        if (!Input::get('items', false, true))
+        if (null === $item)
         {
             return '';
         }
@@ -70,6 +82,13 @@ class SiblingNavigationNews extends ModuleNews
         $this->news_archives = $this->sortOutProtected(StringUtil::deserialize($this->news_archives));
 
         if (!\is_array($this->news_archives) || empty($this->news_archives))
+        {
+            return '';
+        }
+
+        $this->currentNews = NewsModel::findByIdOrAlias($item);
+
+        if (null === $this->currentNews)
         {
             return '';
         }
@@ -83,13 +102,10 @@ class SiblingNavigationNews extends ModuleNews
      */
     protected function compile()
     {
-        // Get the current news item
-        $objCurrent = NewsModel::findByIdOrAlias(Input::get('items', false, true));
-
         // Check if archive of current news item is within the enabled archives
-        if (!in_array($objCurrent->pid, $this->news_archives))
+        if (!in_array($this->currentNews->pid, $this->news_archives))
         {
-            $this->news_archives = [$objCurrent->pid];
+            $this->news_archives = [$this->currentNews->pid];
         }
 
         $t = NewsModel::getTable();
@@ -151,39 +167,39 @@ class SiblingNavigationNews extends ModuleNews
             case 'sort_date_asc':
             case 'order_date_asc':
                 $arrQueryPrev['column'][] = "$t.date > ?"; 
-                $arrQueryPrev['value'][] = $objCurrent->date;
+                $arrQueryPrev['value'][] = $this->currentNews->date;
                 $arrQueryPrev['order'] = "$t.date ASC";
                 $arrQueryNext['column'][] = "$t.date < ?";
-                $arrQueryNext['value'][] = $objCurrent->date;
+                $arrQueryNext['value'][] = $this->currentNews->date;
                 $arrQueryNext['order'] = "$t.date DESC";
                 break;
 
             case 'sort_headline_asc':
             case 'order_headline_asc':
                 $arrQueryPrev['column'][] = "$t.headline > ?"; 
-                $arrQueryPrev['value'][] = $objCurrent->headline;
+                $arrQueryPrev['value'][] = $this->currentNews->headline;
                 $arrQueryPrev['order'] = "$t.headline ASC";
                 $arrQueryNext['column'][] = "$t.headline < ?";
-                $arrQueryNext['value'][] = $objCurrent->headline;
+                $arrQueryNext['value'][] = $this->currentNews->headline;
                 $arrQueryNext['order'] = "$t.headline DESC";
                 break;
 
             case 'sort_headline_desc':
             case 'order_headline_desc':
                 $arrQueryPrev['column'][] = "$t.headline < ?"; 
-                $arrQueryPrev['value'][] = $objCurrent->headline;
+                $arrQueryPrev['value'][] = $this->currentNews->headline;
                 $arrQueryPrev['order'] = "$t.headline DESC";
                 $arrQueryNext['column'][] = "$t.headline > ?";
-                $arrQueryNext['value'][] = $objCurrent->headline;
+                $arrQueryNext['value'][] = $this->currentNews->headline;
                 $arrQueryNext['order'] = "$t.headline ASC";
                 break;
 
             default:
                 $arrQueryPrev['column'][] = "$t.date < ?"; 
-                $arrQueryPrev['value'][] = $objCurrent->date;
+                $arrQueryPrev['value'][] = $this->currentNews->date;
                 $arrQueryPrev['order'] = "$t.date DESC";
                 $arrQueryNext['column'][] = "$t.date > ?";
-                $arrQueryNext['value'][] = $objCurrent->date;
+                $arrQueryNext['value'][] = $this->currentNews->date;
                 $arrQueryNext['order'] = "$t.date ASC";
         }
 
