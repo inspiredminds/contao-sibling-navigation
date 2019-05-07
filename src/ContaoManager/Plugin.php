@@ -1,29 +1,25 @@
 <?php
 
-/**
- * This file is part of the ContaoSiblingNavigation Bundle.
+declare(strict_types=1);
+
+/*
+ * This file is part of the ContaoSiblingNavigationBundle.
  *
- * (c) inspiredminds <https://github.com/inspiredminds>
+ * (c) inspiredminds
  *
- * @package   ContaoSiblingNavigation
- * @author    Fritz Michael Gschwantner <https://github.com/fritzmg>
- * @license   LGPL-3.0+
- * @copyright inspiredminds 2018
+ * @license LGPL-3.0-or-later
  */
 
 namespace InspiredMinds\ContaoSiblingNavigation\ContaoManager;
 
-use InspiredMinds\ContaoSiblingNavigation\ContaoSiblingNavigationBundle;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
 use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
-
+use InspiredMinds\ContaoSiblingNavigation\ContaoSiblingNavigationBundle;
 
 /**
  * Plugin for the Contao Manager.
- *
- * @author Fritz Michael Gschwantner <fmg@inspiredminds.at>
  */
 class Plugin implements BundlePluginInterface
 {
@@ -34,7 +30,7 @@ class Plugin implements BundlePluginInterface
     {
         return [
             BundleConfig::create(ContaoSiblingNavigationBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class,'news_sorting'])
+                ->setLoadAfter([ContaoCoreBundle::class, 'news_sorting']),
         ];
     }
 }

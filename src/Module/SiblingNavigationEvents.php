@@ -1,14 +1,13 @@
 <?php
 
-/**
- * This file is part of the ContaoSiblingNavigation Bundle.
+declare(strict_types=1);
+
+/*
+ * This file is part of the ContaoSiblingNavigationBundle.
  *
- * (c) inspiredminds <https://github.com/inspiredminds>
+ * (c) inspiredminds
  *
- * @package   ContaoSiblingNavigation
- * @author    Fritz Michael Gschwantner <https://github.com/fritzmg>
- * @license   LGPL-3.0+
- * @copyright inspiredminds 2018
+ * @license LGPL-3.0-or-later
  */
 
 namespace InspiredMinds\ContaoSiblingNavigation\Module;
@@ -32,11 +31,10 @@ class SiblingNavigationEvents extends Events
 
     /**
      * Current event.
-     * 
+     *
      * @var CalendarEventsModel
      */
-    protected $currentEvent = null;
-
+    protected $currentEvent;
 
     /**
      * Display a wildcard in the back end.
@@ -45,62 +43,53 @@ class SiblingNavigationEvents extends Events
      */
     public function generate()
     {
-        if (TL_MODE == 'BE')
-        {
+        if (TL_MODE === 'BE') {
             $objTemplate = new BackendTemplate('be_wildcard');
 
-            $objTemplate->wildcard = '### '. Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['sibling_navigation_events'][0]). ' ###';
+            $objTemplate->wildcard = '### '.Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['sibling_navigation_events'][0]).' ###';
 
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
             $objTemplate->link = $this->name;
-            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id='.$this->id;
 
             return $objTemplate->parse();
         }
 
         // Set the item from the auto_item parameter
         $item = null;
-        if (!isset($_GET['items']) && Config::get('useAutoItem') && isset($_GET['auto_item']))
-        {
+        if (!isset($_GET['items']) && Config::get('useAutoItem') && isset($_GET['auto_item'])) {
             $item = Input::get('auto_item', false, true);
-        }
-        else
-        {
+        } else {
             $item = Input::get('items', false, true);
         }
 
-        if (null === $item)
-        {
+        if (null === $item) {
             return '';
         }
 
         $this->cal_calendar = $this->sortOutProtected(StringUtil::deserialize($this->cal_calendar));
 
-        if (!\is_array($this->cal_calendar) || empty($this->cal_calendar))
-        {
+        if (!\is_array($this->cal_calendar) || empty($this->cal_calendar)) {
             return '';
         }
 
         $this->currentEvent = CalendarEventsModel::findByIdOrAlias($item);
 
-        if (null === $this->currentEvent)
-        {
+        if (null === $this->currentEvent) {
             return '';
         }
 
         return parent::generate();
     }
 
-
     /**
      * Generate the module.
      */
-    protected function compile()
+    protected function compile(): void
     {
         // Check if calendar of current event is within the enabled calendars
-        if (!in_array($this->currentEvent->pid, $this->cal_calendar))
-        {
+        if (!\in_array($this->currentEvent->pid, $this->cal_calendar, true)) {
             $this->cal_calendar = [$this->currentEvent->pid];
         }
 
@@ -109,17 +98,14 @@ class SiblingNavigationEvents extends Events
         ksort($days);
 
         // Search for previous and next event
-        $prev  = null;
-        $next  = null;
+        $prev = null;
+        $next = null;
         $flatEvents = [];
 
-        foreach ($days as $day)
-        {
+        foreach ($days as $day) {
             ksort($day);
-            foreach ($day as $events)
-            {
-                foreach ($events as $event)
-                {
+            foreach ($day as $events) {
+                foreach ($events as $event) {
                     $flatEvents[$event['id']] = $event;
                 }
             }
@@ -127,12 +113,12 @@ class SiblingNavigationEvents extends Events
 
         $flatEvents = array_values($flatEvents);
 
-        for ($i = 0; $i < count($flatEvents); ++$i) {
-            if ($flatEvents[$i]['id'] == $this->currentEvent->id) {
+        for ($i = 0; $i < \count($flatEvents); ++$i) {
+            if ($flatEvents[$i]['id'] === $this->currentEvent->id) {
                 if ($i > 0) {
                     $prev = $flatEvents[$i - 1];
                 }
-                if ($i < count($flatEvents) -1) {
+                if ($i < \count($flatEvents) - 1) {
                     $next = $flatEvents[$i + 1];
                 }
                 break;
