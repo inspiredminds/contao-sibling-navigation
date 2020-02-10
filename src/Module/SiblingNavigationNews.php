@@ -72,11 +72,7 @@ class SiblingNavigationNews extends ModuleNews
             return '';
         }
 
-        $this->news_archives = $this->sortOutProtected(StringUtil::deserialize($this->news_archives));
-
-        if (!\is_array($this->news_archives) || empty($this->news_archives)) {
-            return '';
-        }
+        $this->news_archives = $this->sortOutProtected(StringUtil::deserialize($this->news_archives, true));
 
         $this->currentNews = NewsModel::findByIdOrAlias($item);
 

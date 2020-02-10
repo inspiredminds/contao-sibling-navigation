@@ -68,11 +68,7 @@ class SiblingNavigationEvents extends Events
             return '';
         }
 
-        $this->cal_calendar = $this->sortOutProtected(StringUtil::deserialize($this->cal_calendar));
-
-        if (!\is_array($this->cal_calendar) || empty($this->cal_calendar)) {
-            return '';
-        }
+        $this->cal_calendar = $this->sortOutProtected(StringUtil::deserialize($this->cal_calendar, true));
 
         $this->currentEvent = CalendarEventsModel::findByIdOrAlias($item);
 

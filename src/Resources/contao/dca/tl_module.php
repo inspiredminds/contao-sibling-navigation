@@ -13,12 +13,27 @@ declare(strict_types=1);
 use Contao\CalendarBundle\ContaoCalendarBundle;
 use Contao\CoreBundle\DataContainer\PaletteManipulator;
 use Contao\DataContainer;
+use Contao\ModuleModel;
 use Contao\NewsBundle\ContaoNewsBundle;
 use Contao\System;
 
 $container = System::getContainer();
 $bundles = $container->getParameter('kernel.bundles');
 $packages = $container->getParameter('kernel.packages');
+
+$GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = function (DataContainer $dc): void {
+    if ($dc->id) {
+        $module = ModuleModel::findById($dc->id);
+
+        if ('sibling_navigation_news' === $module->type) {
+            $GLOBALS['TL_DCA']['tl_module']['fields']['news_archives']['eval']['mandatory'] = false;
+        }
+
+        if ('sibling_navigation_events' === $module->type) {
+            $GLOBALS['TL_DCA']['tl_module']['fields']['cal_calendar']['eval']['mandatory'] = false;
+        }
+    }
+};
 
 /*
  * News sibling navigation
@@ -32,7 +47,7 @@ if (\in_array(ContaoNewsBundle::class, $bundles, true)) {
         {expert_legend:hide},guests,cssID,space;
         {invisible_legend:hide},invisible,start,stop';
 
-    $version = $packages['contao/news-bundle'];
+    $version = $packages['contao/news-bundle'] ?: $packages['contao/contao'];
     if (\version_compare($version, '4.5', '>=')) {
         $GLOBALS['TL_DCA']['tl_module']['fields']['news_order']['options_callback'] = function (DataContainer $dc) {
             if ($dc->activeRecord && 'sibling_navigation_news' === $dc->activeRecord->type) {
