@@ -110,7 +110,7 @@ class SiblingNavigationEvents extends Events
         $flatEvents = array_values($flatEvents);
 
         for ($i = 0; $i < \count($flatEvents); ++$i) {
-            if ($flatEvents[$i]['id'] === $this->currentEvent->id) {
+            if ((int) $flatEvents[$i]['id'] === (int) $this->currentEvent->id) {
                 if ($i > 0) {
                     $prev = $flatEvents[$i - 1];
                 }
@@ -121,13 +121,40 @@ class SiblingNavigationEvents extends Events
             }
         }
 
+        $first = null;
+        $last = null;
+
+        if (\count($flatEvents) > 0) {
+            $firstEntry = $flatEvents[0];
+
+            if ((int) $firstEntry['id'] !== (int) $this->currentEvent->id && null !== $prev) {
+                if ((int) $firstEntry['id'] !== $prev->id) {
+                    $first = CalendarEventsModel::findById($firstEntry['id']);
+                }
+            }
+
+            $lastEntry = $flatEvents[\count($flatEvents) - 1];
+
+            if ((int) $lastEntry['id'] !== (int) $this->currentEvent->id && null !== $next) {
+                if ((int) $lastEntry['id'] !== $next->id) {
+                    $last = CalendarEventsModel::findById($lastEntry['id']);
+                }
+            }
+        }
+
         $prev = $prev ? CalendarEventsModel::findById($prev['id']) : null;
         $next = $next ? CalendarEventsModel::findById($next['id']) : null;
 
+        $this->Template->first = $first ? Events::generateEventUrl($first) : null;
+        $this->Template->last = $last ? Events::generateEventUrl($last) : null;
         $this->Template->prev = $prev ? Events::generateEventUrl($prev) : null;
         $this->Template->next = $next ? Events::generateEventUrl($next) : null;
+        $this->Template->firstTitle = $first ? $first->title : '';
+        $this->Template->lastTitle = $last ? $last->title : '';
         $this->Template->prevTitle = $prev ? $prev->title : '';
         $this->Template->nextTitle = $next ? $next->title : '';
+        $this->Template->objFirst = $first;
+        $this->Template->objLast = $last;
         $this->Template->objPrev = $prev;
         $this->Template->objNext = $next;
     }
