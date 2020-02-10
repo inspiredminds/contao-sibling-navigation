@@ -138,6 +138,8 @@ class SiblingNavigationNews extends ModuleNews
 
         $arrQueryPrev = $arrQuery;
         $arrQueryNext = $arrQuery;
+        $arrQueryFirst = $arrQuery;
+        $arrQueryLast = $arrQuery;
 
         // support for news_sorting and news_order
         $this->news_order = $this->news_sorting ?: $this->news_order;
@@ -147,9 +149,18 @@ class SiblingNavigationNews extends ModuleNews
                 $arrQueryPrev['column'][] = "$t.date > ?";
                 $arrQueryPrev['value'][] = $this->currentNews->date;
                 $arrQueryPrev['order'] = "$t.date ASC";
+
                 $arrQueryNext['column'][] = "$t.date < ?";
                 $arrQueryNext['value'][] = $this->currentNews->date;
                 $arrQueryNext['order'] = "$t.date DESC";
+
+                $arrQueryFirst['column'][] = "$t.date > ?";
+                $arrQueryFirst['value'][] = $this->currentNews->date;
+                $arrQueryFirst['order'] = "$t.date DESC";
+
+                $arrQueryLast['column'][] = "$t.date < ?";
+                $arrQueryLast['value'][] = $this->currentNews->date;
+                $arrQueryLast['order'] = "$t.date ASC";
                 break;
 
             case 'sort_headline_asc':
@@ -157,9 +168,18 @@ class SiblingNavigationNews extends ModuleNews
                 $arrQueryPrev['column'][] = "$t.headline > ?";
                 $arrQueryPrev['value'][] = $this->currentNews->headline;
                 $arrQueryPrev['order'] = "$t.headline ASC";
+
                 $arrQueryNext['column'][] = "$t.headline < ?";
                 $arrQueryNext['value'][] = $this->currentNews->headline;
                 $arrQueryNext['order'] = "$t.headline DESC";
+
+                $arrQueryFirst['column'][] = "$t.headline > ?";
+                $arrQueryFirst['value'][] = $this->currentNews->headline;
+                $arrQueryFirst['order'] = "$t.headline DESC";
+
+                $arrQueryLast['column'][] = "$t.headline < ?";
+                $arrQueryLast['value'][] = $this->currentNews->headline;
+                $arrQueryLast['order'] = "$t.headline ASC";
                 break;
 
             case 'sort_headline_desc':
@@ -167,30 +187,68 @@ class SiblingNavigationNews extends ModuleNews
                 $arrQueryPrev['column'][] = "$t.headline < ?";
                 $arrQueryPrev['value'][] = $this->currentNews->headline;
                 $arrQueryPrev['order'] = "$t.headline DESC";
+
                 $arrQueryNext['column'][] = "$t.headline > ?";
                 $arrQueryNext['value'][] = $this->currentNews->headline;
                 $arrQueryNext['order'] = "$t.headline ASC";
+
+                $arrQueryFirst['column'][] = "$t.headline < ?";
+                $arrQueryFirst['value'][] = $this->currentNews->headline;
+                $arrQueryFirst['order'] = "$t.headline ASC";
+
+                $arrQueryLast['column'][] = "$t.headline > ?";
+                $arrQueryLast['value'][] = $this->currentNews->headline;
+                $arrQueryLast['order'] = "$t.headline DESC";
                 break;
 
             default:
                 $arrQueryPrev['column'][] = "$t.date < ?";
                 $arrQueryPrev['value'][] = $this->currentNews->date;
                 $arrQueryPrev['order'] = "$t.date DESC";
+
                 $arrQueryNext['column'][] = "$t.date > ?";
                 $arrQueryNext['value'][] = $this->currentNews->date;
                 $arrQueryNext['order'] = "$t.date ASC";
+
+                $arrQueryFirst['column'][] = "$t.date < ?";
+                $arrQueryFirst['value'][] = $this->currentNews->date;
+                $arrQueryFirst['order'] = "$t.date ASC";
+
+                $arrQueryLast['column'][] = "$t.date > ?";
+                $arrQueryLast['value'][] = $this->currentNews->date;
+                $arrQueryLast['order'] = "$t.date DESC";
         }
+
+        $objFirst = NewsModel::findAll($arrQueryFirst);
+        $objLast = NewsModel::findAll($arrQueryLast);
 
         $objPrev = NewsModel::findAll($arrQueryPrev);
         $objNext = NewsModel::findAll($arrQueryNext);
 
+        if ($objFirst->id === $objPrev->id) {
+            $objFirst = null;
+        }
+
+        if ($objLast->id === $objNext->id) {
+            $objLast = null;
+        }
+
+        $strFirstLink = $objFirst ? News::generateNewsUrl($objFirst).($strCategory ? '?category='.$strCategory : '') : null;
+        $strLastLink = $objLast ? News::generateNewsUrl($objLast).($strCategory ? '?category='.$strCategory : '') : null;
+
         $strPrevLink = $objPrev ? News::generateNewsUrl($objPrev).($strCategory ? '?category='.$strCategory : '') : null;
         $strNextLink = $objNext ? News::generateNewsUrl($objNext).($strCategory ? '?category='.$strCategory : '') : null;
 
+        $this->Template->first = $strFirstLink;
+        $this->Template->last = $strLastLink;
         $this->Template->prev = $strPrevLink;
         $this->Template->next = $strNextLink;
+        $this->Template->firstTitle = $objFirst ? $objFirst->headline : '';
+        $this->Template->lastTitle = $objLast ? $objLast->headline : '';
         $this->Template->prevTitle = $objPrev ? $objPrev->headline : '';
         $this->Template->nextTitle = $objNext ? $objNext->headline : '';
+        $this->Template->objFirst = $objFirst;
+        $this->Template->objLast = $objLast;
         $this->Template->objPrev = $objPrev;
         $this->Template->objNext = $objNext;
     }

@@ -35,13 +35,21 @@ $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = function (DataC
     }
 };
 
+$GLOBALS['TL_DCA']['tl_module']['fields']['siblingShowFirstLast'] = [
+    'label' => &$GLOBALS['TL_LANG']['tl_module']['siblingShowFirstLast'],
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'eval' => ['tl_class' => 'w50 m12'],
+    'sql' => "char(1) NOT NULL default ''",
+];
+
 /*
  * News sibling navigation
  */
 if (\in_array(ContaoNewsBundle::class, $bundles, true)) {
     $GLOBALS['TL_DCA']['tl_module']['palettes']['sibling_navigation_news'] = '
         {title_legend},name,headline,type;
-        {config_legend},news_archives;
+        {config_legend},news_archives,siblingShowFirstLast;
         {template_legend:hide},customTpl;
         {protected_legend:hide},protected;
         {expert_legend:hide},guests,cssID,space;
@@ -58,7 +66,7 @@ if (\in_array(ContaoNewsBundle::class, $bundles, true)) {
         };
 
         PaletteManipulator::create()
-            ->addField('news_order', 'config_legend', PaletteManipulator::POSITION_APPEND)
+            ->addField('news_order', 'news_archives', PaletteManipulator::POSITION_AFTER)
             ->applyToPalette('sibling_navigation_news', 'tl_module')
         ;
     } elseif (\in_array('news_sorting', \array_keys($bundles), true)) {
@@ -71,7 +79,7 @@ if (\in_array(ContaoNewsBundle::class, $bundles, true)) {
         };
 
         PaletteManipulator::create()
-            ->addField('news_sorting', 'config_legend', PaletteManipulator::POSITION_APPEND)
+            ->addField('news_sorting', 'news_archives', PaletteManipulator::POSITION_AFTER)
             ->applyToPalette('sibling_navigation_news', 'tl_module')
         ;
     }
@@ -83,7 +91,7 @@ if (\in_array(ContaoNewsBundle::class, $bundles, true)) {
 if (\in_array(ContaoCalendarBundle::class, $bundles, true)) {
     $GLOBALS['TL_DCA']['tl_module']['palettes']['sibling_navigation_events'] = '
         {title_legend},name,headline,type;
-        {config_legend},cal_calendar;
+        {config_legend},cal_calendar,siblingShowFirstLast;
         {template_legend:hide},customTpl;
         {protected_legend:hide},protected;
         {expert_legend:hide},guests,cssID,space;
