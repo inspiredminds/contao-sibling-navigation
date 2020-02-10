@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace InspiredMinds\ContaoSiblingNavigation\ContaoManager;
 
+use Contao\CalendarBundle\ContaoCalendarBundle;
 use Contao\CoreBundle\ContaoCoreBundle;
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
@@ -30,7 +31,7 @@ class Plugin implements BundlePluginInterface
     {
         return [
             BundleConfig::create(ContaoSiblingNavigationBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class, 'news_sorting']),
+                ->setLoadAfter([ContaoCoreBundle::class, 'news_sorting', ContaoCalendarBundle::class]),
         ];
     }
 }
