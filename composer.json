@@ -3,7 +3,7 @@
     "description": "Provides a previous/next navigation for news & events.",
     "keywords": ["contao", "sibling", "navigation", "news", "events"],
     "type": "contao-bundle",
-    "homepage": "http://www.inspiredminds.at",
+    "homepage": "https://github.com/inspiredminds/contao-sibling-navigation",
     "license": "LGPL-3.0-or-later",
     "authors": [
         {
