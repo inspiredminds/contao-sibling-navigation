@@ -37,7 +37,7 @@ This will limit the previous and next links to news items that have categories w
 
 ## Custom Templates
 
-If you want to use a custom template, the name of the copy of mod_sibling_navigation.html5 has to be modified that the first part of the name is either mod_sibling_navigation_events or mod_sibling_navigation_news depending on whether your customized template should be used for the events or news sibling navigation.
+If you want to use a custom template, the name of the copy of `mod_sibling_navigation.html5` has to be modified that the first part of the name is either `mod_sibling_navigation_events` or `mod_sibling_navigation_news` depending on whether your customized template should be used for the events or news sibling navigation.
 
 
 ## Acknowledgements
