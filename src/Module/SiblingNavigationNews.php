@@ -17,7 +17,6 @@ use Contao\BackendTemplate;
 use Contao\Config;
 use Contao\Date;
 use Contao\Input;
-use Contao\Model;
 use Contao\ModuleNews;
 use Contao\News;
 use Contao\NewsModel;
@@ -106,7 +105,7 @@ class SiblingNavigationNews extends ModuleNews
             'return' => 'Model',
         ];
 
-        if (!Model::isPreviewMode()) {
+        if (!$this->isPreviewMode()) {
             $time = Date::floorToMinute();
             $arrQuery['column'][] = "$t.published='1' AND ($t.start='' OR $t.start<='$time') AND ($t.stop='' OR $t.stop>'$time')";
         }
@@ -257,5 +256,10 @@ class SiblingNavigationNews extends ModuleNews
         $this->Template->objLast = $objLast;
         $this->Template->objPrev = $objPrev;
         $this->Template->objNext = $objNext;
+    }
+
+    private function isPreviewMode(): bool
+    {
+        return \defined('BE_USER_LOGGED_IN') && BE_USER_LOGGED_IN === true;
     }
 }
