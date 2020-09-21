@@ -1,4 +1,3 @@
-[![](https://img.shields.io/maintenance/yes/2020.svg)](https://github.com/inspiredminds/contao-sibling-navigation)
 [![](https://img.shields.io/packagist/v/inspiredminds/contao-sibling-navigation.svg)](https://packagist.org/packages/inspiredminds/contao-sibling-navigation)
 [![](https://img.shields.io/packagist/dt/inspiredminds/contao-sibling-navigation.svg)](https://packagist.org/packages/inspiredminds/contao-sibling-navigation)
 
