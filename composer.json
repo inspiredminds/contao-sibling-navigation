@@ -19,6 +19,12 @@
         "source": "https://github.com/inspiredminds/contao-sibling-navigation",
         "forum": "https://community.contao.org/de"
     },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/fritzmg"
+        }
+    ],
     "require": {
         "php": ">=5.4",
         "contao/core-bundle": "^4.4",
