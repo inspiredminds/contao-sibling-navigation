@@ -206,6 +206,42 @@ class SiblingNavigationNews extends ModuleNews
                 $arrQueryLast['order'] = "$t.headline DESC";
                 break;
 
+            case 'order_custom_date_asc':
+                $arrQueryPrev['column'][] = "$t.headline < ?";
+                $arrQueryPrev['value'][] = $this->currentNews->headline;
+                $arrQueryPrev['order'] = "$t.sorting, $t.date ASC";
+
+                $arrQueryNext['column'][] = "$t.headline > ?";
+                $arrQueryNext['value'][] = $this->currentNews->headline;
+                $arrQueryNext['order'] = "$t.sorting, $t.date DESC";
+
+                $arrQueryFirst['column'][] = "$t.headline < ?";
+                $arrQueryFirst['value'][] = $this->currentNews->headline;
+                $arrQueryFirst['order'] = "$t.sorting, $t.date DESC";
+
+                $arrQueryLast['column'][] = "$t.headline > ?";
+                $arrQueryLast['value'][] = $this->currentNews->headline;
+                $arrQueryLast['order'] = "$t.sorting, $t.date ASC";
+                break;
+
+            case 'order_custom_date_desc':
+                $arrQueryPrev['column'][] = "$t.headline < ?";
+                $arrQueryPrev['value'][] = $this->currentNews->headline;
+                $arrQueryPrev['order'] = "$t.sorting, $t.date DESC";
+
+                $arrQueryNext['column'][] = "$t.headline > ?";
+                $arrQueryNext['value'][] = $this->currentNews->headline;
+                $arrQueryNext['order'] = "$t.sorting, $t.date ASC";
+
+                $arrQueryFirst['column'][] = "$t.headline < ?";
+                $arrQueryFirst['value'][] = $this->currentNews->headline;
+                $arrQueryFirst['order'] = "$t.sorting, $t.date ASC";
+
+                $arrQueryLast['column'][] = "$t.headline > ?";
+                $arrQueryLast['value'][] = $this->currentNews->headline;
+                $arrQueryLast['order'] = "$t.sorting, $t.date DESC";
+                break;
+
             default:
                 $arrQueryPrev['column'][] = "$t.date < ?";
                 $arrQueryPrev['value'][] = $this->currentNews->date;
