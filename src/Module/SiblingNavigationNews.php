@@ -100,7 +100,9 @@ class SiblingNavigationNews extends ModuleNews
         $arrQuery = [
             'column' => [
                 "$t.pid IN(".\implode(',', \array_map('intval', $this->news_archives)).')',
+                "$t.id != ?",
             ],
+            'value' => [$this->currentNews->id],
             'limit' => 1,
             'return' => 'Model',
         ];
@@ -207,39 +209,39 @@ class SiblingNavigationNews extends ModuleNews
                 break;
 
             case 'order_custom_date_asc':
-                $arrQueryPrev['column'][] = "$t.headline < ?";
-                $arrQueryPrev['value'][] = $this->currentNews->headline;
-                $arrQueryPrev['order'] = "$t.sorting, $t.date ASC";
+                $arrQueryPrev['column'][] = "$t.sorting < ?";
+                $arrQueryPrev['value'][] = $this->currentNews->sorting;
+                $arrQueryPrev['order'] = "$t.sorting DESC, $t.date ASC";
 
-                $arrQueryNext['column'][] = "$t.headline > ?";
-                $arrQueryNext['value'][] = $this->currentNews->headline;
-                $arrQueryNext['order'] = "$t.sorting, $t.date DESC";
+                $arrQueryNext['column'][] = "$t.sorting > ?";
+                $arrQueryNext['value'][] = $this->currentNews->sorting;
+                $arrQueryNext['order'] = "$t.sorting ASC, $t.date ASC";
 
-                $arrQueryFirst['column'][] = "$t.headline < ?";
-                $arrQueryFirst['value'][] = $this->currentNews->headline;
-                $arrQueryFirst['order'] = "$t.sorting, $t.date DESC";
+                $arrQueryFirst['column'][] = "$t.sorting < ?";
+                $arrQueryFirst['value'][] = $this->currentNews->sorting;
+                $arrQueryFirst['order'] = "$t.sorting ASC, $t.date ASC";
 
-                $arrQueryLast['column'][] = "$t.headline > ?";
-                $arrQueryLast['value'][] = $this->currentNews->headline;
-                $arrQueryLast['order'] = "$t.sorting, $t.date ASC";
+                $arrQueryLast['column'][] = "$t.sorting > ?";
+                $arrQueryLast['value'][] = $this->currentNews->sorting;
+                $arrQueryLast['order'] = "$t.sorting DESC, $t.date ASC";
                 break;
 
             case 'order_custom_date_desc':
-                $arrQueryPrev['column'][] = "$t.headline < ?";
-                $arrQueryPrev['value'][] = $this->currentNews->headline;
-                $arrQueryPrev['order'] = "$t.sorting, $t.date DESC";
+                $arrQueryPrev['column'][] = "$t.sorting < ?";
+                $arrQueryPrev['value'][] = $this->currentNews->sorting;
+                $arrQueryPrev['order'] = "$t.sorting DESC, $t.date DESC";
 
-                $arrQueryNext['column'][] = "$t.headline > ?";
-                $arrQueryNext['value'][] = $this->currentNews->headline;
-                $arrQueryNext['order'] = "$t.sorting, $t.date ASC";
+                $arrQueryNext['column'][] = "$t.sorting > ?";
+                $arrQueryNext['value'][] = $this->currentNews->sorting;
+                $arrQueryNext['order'] = "$t.sorting ASC, $t.date DESC";
 
-                $arrQueryFirst['column'][] = "$t.headline < ?";
-                $arrQueryFirst['value'][] = $this->currentNews->headline;
-                $arrQueryFirst['order'] = "$t.sorting, $t.date ASC";
+                $arrQueryFirst['column'][] = "$t.sorting < ?";
+                $arrQueryFirst['value'][] = $this->currentNews->sorting;
+                $arrQueryFirst['order'] = "$t.sorting ASC, $t.date DESC";
 
-                $arrQueryLast['column'][] = "$t.headline > ?";
-                $arrQueryLast['value'][] = $this->currentNews->headline;
-                $arrQueryLast['order'] = "$t.sorting, $t.date DESC";
+                $arrQueryLast['column'][] = "$t.sorting > ?";
+                $arrQueryLast['value'][] = $this->currentNews->sorting;
+                $arrQueryLast['order'] = "$t.sorting DESC, $t.date DESC";
                 break;
 
             default:
@@ -265,14 +267,6 @@ class SiblingNavigationNews extends ModuleNews
 
         $objPrev = NewsModel::findAll($arrQueryPrev);
         $objNext = NewsModel::findAll($arrQueryNext);
-
-        if ($objFirst->id === $objPrev->id) {
-            $objFirst = null;
-        }
-
-        if ($objLast->id === $objNext->id) {
-            $objLast = null;
-        }
 
         $strFirstLink = $objFirst ? News::generateNewsUrl($objFirst).($strCategory ? '?category='.$strCategory : '') : null;
         $strLastLink = $objLast ? News::generateNewsUrl($objLast).($strCategory ? '?category='.$strCategory : '') : null;
