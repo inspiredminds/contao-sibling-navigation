@@ -27,15 +27,14 @@
     ],
     "require": {
         "php": ">=5.4",
-        "contao/core-bundle": "^4.4",
-        "patchwork/utf8": "^1.0"
+        "contao/core-bundle": "^4.9 || ^5.0"
     },
     "require-dev": {
          "contao/manager-plugin": "^2.0"
     },
     "conflict": {
-        "contao/news-bundle": "<4.4 || ^5.0",
-        "contao/calendar-bundle": "<4.4 || ^5.0",
+        "contao/news-bundle": "<4.4 || ^6.0",
+        "contao/calendar-bundle": "<4.4 || ^6.0",
         "codefog/contao-news_categories": "^4.0"
     },
     "suggest": {

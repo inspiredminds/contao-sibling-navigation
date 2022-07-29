@@ -18,7 +18,6 @@ use Contao\Config;
 use Contao\Events;
 use Contao\Input;
 use Contao\StringUtil;
-use Patchwork\Utf8;
 
 class SiblingNavigationEvents extends Events
 {
@@ -43,10 +42,12 @@ class SiblingNavigationEvents extends Events
      */
     public function generate()
     {
-        if (TL_MODE === 'BE') {
+        $request = System::getContainer()->get('request_stack')->getCurrentRequest();
+
+        if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)) {
             $objTemplate = new BackendTemplate('be_wildcard');
 
-            $objTemplate->wildcard = '### '.Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['sibling_navigation_events'][0]).' ###';
+            $objTemplate->wildcard = '### '.mb_strtoupper($GLOBALS['TL_LANG']['FMD']['sibling_navigation_events'][0]).' ###';
 
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;

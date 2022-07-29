@@ -36,7 +36,7 @@ class Plugin implements BundlePluginInterface
                     ContaoCoreBundle::class,
                     ContaoCalendarBundle::class,
                     ContaoNewsBundle::class,
-                    'news_sorting'
+                    'news_sorting',
                 ]),
         ];
     }

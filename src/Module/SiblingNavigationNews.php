@@ -23,7 +23,6 @@ use Contao\NewsModel;
 use Contao\StringUtil;
 use Contao\System;
 use Haste\Model\Model as HasteModel;
-use Patchwork\Utf8;
 
 class SiblingNavigationNews extends ModuleNews
 {
@@ -48,10 +47,12 @@ class SiblingNavigationNews extends ModuleNews
      */
     public function generate()
     {
-        if (TL_MODE === 'BE') {
+        $request = System::getContainer()->get('request_stack')->getCurrentRequest();
+
+        if ($request && System::getContainer()->get('contao.routing.scope_matcher')->isBackendRequest($request)) {
             $objTemplate = new BackendTemplate('be_wildcard');
 
-            $objTemplate->wildcard = '### '.Utf8::strtoupper($GLOBALS['TL_LANG']['FMD']['sibling_navigation_news'][0]).' ###';
+            $objTemplate->wildcard = '### '.mb_strtoupper($GLOBALS['TL_LANG']['FMD']['sibling_navigation_news'][0]).' ###';
 
             $objTemplate->title = $this->headline;
             $objTemplate->id = $this->id;
@@ -99,7 +100,7 @@ class SiblingNavigationNews extends ModuleNews
         // Basic query definition
         $arrQuery = [
             'column' => [
-                "$t.pid IN(".\implode(',', \array_map('intval', $this->news_archives)).')',
+                "$t.pid IN(".implode(',', array_map('intval', $this->news_archives)).')',
                 "$t.id != ?",
             ],
             'value' => [$this->currentNews->id],
@@ -128,18 +129,18 @@ class SiblingNavigationNews extends ModuleNews
 
                 // Intersect all news IDs (ignoring empty ones)
                 if ($arrCategoryNewsIds && $arrNewsIds) {
-                    $arrCategoryNewsIds = \array_intersect($arrCategoryNewsIds, $arrNewsIds);
+                    $arrCategoryNewsIds = array_intersect($arrCategoryNewsIds, $arrNewsIds);
                 } elseif (!$arrCategoryNewsIds) {
                     $arrCategoryNewsIds = $arrNewsIds;
                 }
             }
 
-            $arrCategoryNewsIds = \array_map('intval', $arrCategoryNewsIds);
-            $arrCategoryNewsIds = \array_filter($arrCategoryNewsIds);
-            $arrCategoryNewsIds = \array_unique($arrCategoryNewsIds);
+            $arrCategoryNewsIds = array_map('intval', $arrCategoryNewsIds);
+            $arrCategoryNewsIds = array_filter($arrCategoryNewsIds);
+            $arrCategoryNewsIds = array_unique($arrCategoryNewsIds);
 
             if ($arrCategoryNewsIds) {
-                $arrQuery['column'][] = "$t.id IN(".\implode(',', $arrCategoryNewsIds).')';
+                $arrQuery['column'][] = "$t.id IN(".implode(',', $arrCategoryNewsIds).')';
             }
         }
 
@@ -290,6 +291,6 @@ class SiblingNavigationNews extends ModuleNews
 
     private function isPreviewMode(): bool
     {
-        return \defined('BE_USER_LOGGED_IN') && BE_USER_LOGGED_IN === true;
+        return System::getContainer()->get('contao.security.token_checker')->isPreviewMode();
     }
 }

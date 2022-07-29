@@ -19,7 +19,6 @@ use Contao\System;
 
 $container = System::getContainer();
 $bundles = $container->getParameter('kernel.bundles');
-$packages = $container->getParameter('kernel.packages');
 
 $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = function (DataContainer $dc): void {
     if ($dc->id) {
@@ -55,34 +54,18 @@ if (\in_array(ContaoNewsBundle::class, $bundles, true)) {
         {expert_legend:hide},guests,cssID,space;
         {invisible_legend:hide},invisible,start,stop';
 
-    $version = $packages['contao/news-bundle'] ?: $packages['contao/contao'];
-    if (\version_compare($version, '4.5', '>=')) {
-        $GLOBALS['TL_DCA']['tl_module']['fields']['news_order']['options_callback'] = function (DataContainer $dc) {
-            if ($dc->activeRecord && 'sibling_navigation_news' === $dc->activeRecord->type) {
-                return ['order_date_asc', 'order_date_desc', 'order_headline_asc', 'order_headline_desc'];
-            }
+    $GLOBALS['TL_DCA']['tl_module']['fields']['news_order']['options_callback'] = function (DataContainer $dc) {
+        if ($dc->activeRecord && 'sibling_navigation_news' === $dc->activeRecord->type) {
+            return ['order_date_asc', 'order_date_desc', 'order_headline_asc', 'order_headline_desc'];
+        }
 
-            return System::importStatic('tl_module_news')->getSortingOptions($dc);
-        };
+        return System::importStatic('tl_module_news')->getSortingOptions($dc);
+    };
 
-        PaletteManipulator::create()
-            ->addField('news_order', 'news_archives', PaletteManipulator::POSITION_AFTER)
-            ->applyToPalette('sibling_navigation_news', 'tl_module')
-        ;
-    } elseif (\in_array('news_sorting', \array_keys($bundles), true)) {
-        $GLOBALS['TL_DCA']['tl_module']['fields']['news_sorting']['options_callback'] = function (DataContainer $dc) {
-            if ($dc->activeRecord && 'sibling_navigation_news' === $dc->activeRecord->type) {
-                return ['sort_date_desc', 'sort_date_asc', 'sort_headline_asc', 'sort_headline_desc'];
-            }
-
-            return $GLOBALS['TL_DCA']['tl_module']['fields']['news_sorting']['options'];
-        };
-
-        PaletteManipulator::create()
-            ->addField('news_sorting', 'news_archives', PaletteManipulator::POSITION_AFTER)
-            ->applyToPalette('sibling_navigation_news', 'tl_module')
-        ;
-    }
+    PaletteManipulator::create()
+        ->addField('news_order', 'news_archives', PaletteManipulator::POSITION_AFTER)
+        ->applyToPalette('sibling_navigation_news', 'tl_module')
+    ;
 }
 
 /*
