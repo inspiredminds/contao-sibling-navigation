@@ -18,6 +18,7 @@ use Contao\Config;
 use Contao\Events;
 use Contao\Input;
 use Contao\StringUtil;
+use Contao\System;
 
 class SiblingNavigationEvents extends Events
 {
