@@ -59,11 +59,13 @@ class SiblingNavigationEvents extends Events
         }
 
         // Set the item from the auto_item parameter
-        $item = null;
-        if (!isset($_GET['items']) && Config::get('useAutoItem') && isset($_GET['auto_item'])) {
-            $item = Input::get('auto_item', false, true);
+        $items = Input::get('items', false, true);
+        $autoItem = Input::get('auto_item', false, true);
+
+        if (null === $items && false !== Config::get('useAutoItem') && null !== $autoItem) {
+            $item = $autoItem;
         } else {
-            $item = Input::get('items', false, true);
+            $item = $items;
         }
 
         if (null === $item) {
