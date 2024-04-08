@@ -22,7 +22,16 @@ use Contao\News;
 use Contao\NewsModel;
 use Contao\StringUtil;
 use Contao\System;
-use Haste\Model\Model as HasteModel;
+
+if (class_exists(\Haste\Model\Model::class)) {
+    class HasteModel extends \Haste\Model\Model
+    {
+    }
+} else if (class_exists(\Codefog\HasteBundle\Model\DcaRelationsModel::class)){
+    class HasteModel extends \Codefog\HasteBundle\Model\DcaRelationsModel
+    {
+    }
+}
 
 class SiblingNavigationNews extends ModuleNews
 {
