@@ -21,9 +21,7 @@ $container = System::getContainer();
 $bundles = $container->getParameter('kernel.bundles');
 
 $GLOBALS['TL_DCA']['tl_module']['config']['onload_callback'][] = function (DataContainer $dc): void {
-    if ($dc->id) {
-        $module = ModuleModel::findById($dc->id);
-
+    if ($dc->id && ($module = ModuleModel::findById($dc->id))) {
         if ('sibling_navigation_news' === $module->type) {
             $GLOBALS['TL_DCA']['tl_module']['fields']['news_archives']['eval']['mandatory'] = false;
         }
