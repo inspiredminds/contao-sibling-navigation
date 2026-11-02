@@ -132,7 +132,7 @@ class SiblingNavigationEvents extends Events
             $firstEntry = $flatEvents[0];
 
             if ((int) $firstEntry['id'] !== (int) $this->currentEvent->id && null !== $prev) {
-                if ((int) $firstEntry['id'] !== $prev->id) {
+                if ((int) $firstEntry['id'] !== (int) $prev['id']) {
                     $first = CalendarEventsModel::findById($firstEntry['id']);
                 }
             }
@@ -140,7 +140,7 @@ class SiblingNavigationEvents extends Events
             $lastEntry = $flatEvents[\count($flatEvents) - 1];
 
             if ((int) $lastEntry['id'] !== (int) $this->currentEvent->id && null !== $next) {
-                if ((int) $lastEntry['id'] !== $next->id) {
+                if ((int) $lastEntry['id'] !== (int) $next['id']) {
                     $last = CalendarEventsModel::findById($lastEntry['id']);
                 }
             }
